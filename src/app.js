@@ -2,11 +2,17 @@ const express = require("express")
 
 const app = express();
 
-app.use("/user", (req, res) => {
+// app.use("/user", (req, res) => {
+//     res.send({firstName: "Moli", lastName: "Nuwal"})
+// })
+
+app.get("/user/:userId/:pswd", (req, res) => {
+    console.log(req.params);
     res.send({firstName: "Moli", lastName: "Nuwal"})
 })
 
 app.get("/user", (req, res) => {
+    console.log(req.query);
     res.send({firstName: "Moli", lastName: "Nuwal"})
 })
 
