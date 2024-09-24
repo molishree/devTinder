@@ -9,3 +9,14 @@
 - What are dependencies
 - WHat is the use of -g while npm install 
 - Difference between caret and tilde
+
+- why package-lock.json is pushed to git?? 
+
+- init git
+- .gitignore
+- Create a remote repo on github
+- Push all code to remote origin
+- Play with routes and route extensions /hello /hello/2 /xyz
+- Order of the routes matter a lot! 
+- Install Postman app and make a workspace/collection > test API call
+- Write logic to handle GET, POST, PATCH, DELETE API calls and test them on Postman
