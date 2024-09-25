@@ -25,6 +25,21 @@ const app = express();
 //     }
 // })
 
+app.get("/getUserData", (req, res) => {
+    try{
+        throw new Error("abcd")
+        res.send("USer data sent")
+    }catch(err){
+        res.status(500).send("Some error occured")
+    }
+})
+
+app.use("/", (err, req, res, next) => {
+    if(err){
+        res.status(500).send("Something went wrong")
+    }
+})
+
 app.use("/admin", adminAuth)
 
 app.use("/admin/getAllData", (req, res) => {
