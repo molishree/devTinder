@@ -45,6 +45,11 @@
 - Push some documents using API calls from Postman
 - Error handling using try catch
 
+- JS object and JSON (difference)
+- Add the express.json middleware to your app
+- Make your signup API dynamic to receive data from the end user
+
+
 molishreenuwal82
 Wk0HSW2B8QWU00V8
 new - "mongodb+srv://molishreenuwal82:Wk0HSW2B8QWU00V8@cluster0.ehkej.mongodb.net/devTinder"
