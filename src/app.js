@@ -17,6 +17,65 @@ app.post("/signup", async (req, res) => {
     }
 })
 
+// find by email
+app.get("/user", async (req, res) => {
+    // const userEmail = req.body.emailId
+    // try{
+    //     const users = await User.find({emailId: userEmail})
+    //     if(users.length===0){
+    //         res.send("Users not found!")
+    //     }else{
+    //         res.send(users)
+    //     }
+
+    // }catch{
+    //     res.status(400).send("Something went wrong!")
+    // }
+    
+    //findOne 
+    // const userEmail = req.body.emailId
+    // try{
+    //     const user = await User.findOne({emailId: userEmail})
+    //     if(!user){
+    //         res.send("User not found!")
+    //     }else{
+    //         res.send(user)
+    //     }
+
+    // }catch{
+    //     res.status(400).send("Something went wrong!")
+    // }
+
+    // find by id
+    const userId = req.body.id
+    try{
+        const user = await User.findById({_id: userId})
+        if(!user){
+            res.send("User not found!")
+        }else{
+            res.send(user)
+        }
+
+    }catch{
+        res.status(400).send("Something went wrong!")
+    }
+})
+
+// feed api
+app.get("/feed", async (req, res) => {
+    try{
+        const users = await User.find({})
+        if(users.length===0){
+            res.send("Users not found!")
+        }else{
+            res.send(users)
+        }
+
+    }catch{
+        res.status(400).send("Something went wrong!")
+    }
+})
+
 
 
 connectDB()
@@ -28,5 +87,6 @@ connectDB()
     })
     .catch((error) => {
         console.error("Database connot be connected")
+        console.log(error)
     }) 
 
