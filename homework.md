@@ -68,7 +68,9 @@
 - add timestamps to the userSchema
 - Add API level validations on Patch request and signup post api
 - Data Sanitizing - Add api validation for each field
-
+- Install validator
+- Explore validator library function and use validator funcs for pswd, email, photoUrl
+- NEVER TRUST req.body
 
 // app.use("/admin", (req, res, next) => {
 //     // authorize the admin
