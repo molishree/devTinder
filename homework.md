@@ -66,7 +66,8 @@
 - create a custom validation function for gender
 - improve the db schema - PUT all appropriate validations on each field in schema
 - add timestamps to the userSchema
-
+- Add API level validations on Patch request and signup post api
+- Data Sanitizing - Add api validation for each field
 
 
 // app.use("/admin", (req, res, next) => {
