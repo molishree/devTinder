@@ -72,6 +72,14 @@
 - Explore validator library function and use validator funcs for pswd, email, photoUrl
 - NEVER TRUST req.body
 
+- Validate data in signup api
+- Install bcrypt package
+- Create PasswordHash using bcrypt.hash and save the user with ecrypted password
+- Create login api
+- Compare passwords and throw errors if email or password is invalid
+    
+
+
 // app.use("/admin", (req, res, next) => {
 //     // authorize the admin
 //     const authToken = "xyz"
