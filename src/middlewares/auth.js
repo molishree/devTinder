@@ -14,7 +14,6 @@ const userAuth = async (req, res, next) => {
         const decodedObj = await jwt.verify(token, "Dev@Moli")
         const { _id } = decodedObj
         const user = await User.findById(_id)
-        console.log(user)
         if(!user){
             throw new Error("User not found")
         }

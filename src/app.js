@@ -1,88 +1,34 @@
 const express = require("express")
-const { adminAuth, userAuth } = require("./middlewares/auth")
 const connectDB = require("./config/database")
 const app = express();
-const User = require("./models/user")
-const { validateSignUpData } = require("./utils/validations")
-const bcrypt = require("bcrypt")
 const cookieParser = require("cookie-parser")
-const jwt = require("jsonwebtoken")
+
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
 
 app.use(express.json())
 app.use(cookieParser())
 
-app.post("/signup", async (req, res) => {
-    try{
-        // validation of user data
-        validateSignUpData(req)
+app.use("/", authRouter)
+app.use("/", profileRouter)
+app.use("/", requestRouter)
 
-        // encrypt the password
-        const { firstName, lastName, emailId, password } = req.body
-        const passwordHash = await bcrypt.hash(password, 10)
-
-        // creating a new instance of the User model
-        const user = new User({
-            firstName,
-            lastName,
-            emailId,
-            password: passwordHash
+connectDB()
+    .then(() => {
+        console.log("database connection established...");
+        app.listen(3000 , () => {
+            console.log("server is listening on port 3000 ");
         })
-        await user.save()
-        res.send("User added successfully!")
-    }catch(err){
-        res.status(400).send("ERROR: " + err.message)
-    }
-})
+    })
+    .catch((error) => {
+        console.error("Database connot be connected")
+        console.log(error)
+    }) 
 
-// login api
-app.post("/login", async (req, res) => {
-    try{
-        const { emailId, password } = req.body;
-        const user = await User.findOne({emailId: emailId})
-
-        if(!user){
-            throw new Error("Invalid Credentials")
-        }
-
-        const isPasswordValid = await user.validatePassword(password)
-        // console.log(isPasswordValid)
-        if(isPasswordValid){
-            // create a JWT token
-            const token = await user.getJWT()
-            console.log(token)
-            // add the token to cookie and send the response back to user
-            res.cookie("token", token, {
-                expires: new Date(Date.now() + 8*3600000)
-            })
-            res.send("Login Successful")
-        }else{
-            throw new Error("Invalid Credentials")
-        }
-    }catch(err){
-        res.status(400).send("ERROR: " + err.message)
-    }
-})
-
-// profile
-app.get("/profile", userAuth, async (req, res) => {
-    try{
-        const user = req.user
-        // console.log(user)
-        res.send(user)
-    }catch(err){
-        res.status(400).send("ERROR: " + err.message)
-    }
-})
-
-// send connection request
-app.post("/sendConnectionRequest", userAuth, async(req, res) => {
-    const user = req.user
-    console.log("Sending a connection request")
-    res.send(user.firstName + " sent a connection request!")
-})
 
 // find by email
-app.get("/user", async (req, res) => {
+// app.get("/user", async (req, res) => {
     // const userEmail = req.body.emailId
     // try{
     //     const users = await User.find({emailId: userEmail})
@@ -111,91 +57,80 @@ app.get("/user", async (req, res) => {
     // }
 
     // find by id
-    const userId = req.body.id
-    try{
-        const user = await User.findById({_id: userId})
-        if(!user){
-            res.send("User not found!")
-        }else{
-            res.send(user)
-        }
+//     const userId = req.body.id
+//     try{
+//         const user = await User.findById({_id: userId})
+//         if(!user){
+//             res.send("User not found!")
+//         }else{
+//             res.send(user)
+//         }
 
-    }catch{
-        res.status(400).send("Something went wrong!")
-    }
-})
+//     }catch{
+//         res.status(400).send("Something went wrong!")
+//     }
+// })
 
 // feed api
-app.get("/feed", async (req, res) => {
-    try{
-        const users = await User.find({})
-        if(users.length===0){
-            res.send("Users not found!")
-        }else{
-            res.send(users)
-        }
+// app.get("/feed", async (req, res) => {
+//     try{
+//         const users = await User.find({})
+//         if(users.length===0){
+//             res.send("Users not found!")
+//         }else{
+//             res.send(users)
+//         }
 
-    }catch{
-        res.status(400).send("Something went wrong!")
-    }
-})
+//     }catch{
+//         res.status(400).send("Something went wrong!")
+//     }
+// })
 
 // delete api
-app.delete("/user", async(req, res) => {
-    try{
-        const userId = req.body.userId
+// app.delete("/user", async(req, res) => {
+//     try{
+//         const userId = req.body.userId
 
-        const user = await User.findByIdAndDelete(userId)
-        res.send("User deleted successfully")
-    }catch(error){
-        res.status(400).send("Something went wrong!")
-    }
-})
+//         const user = await User.findByIdAndDelete(userId)
+//         res.send("User deleted successfully")
+//     }catch(error){
+//         res.status(400).send("Something went wrong!")
+//     }
+// })
 
 // update api
-app.patch("/user/:userId", async(req, res) => {
-    const userId = req.params?.userId
-    const data = req.body
+// app.patch("/user/:userId", async(req, res) => {
+//     const userId = req.params?.userId
+//     const data = req.body
 
-    try{
-        const ALLOWED_UPDATES = [
-            "photoUrl",
-            "about",
-            "gender",
-            "age",
-            "skills"
-        ]
-        const isUpdateAllowed = Object.keys(data).every((k) => 
-            ALLOWED_UPDATES.includes(k)
-        )
-        console.log(isUpdateAllowed)
-        if(!isUpdateAllowed){
-            throw new Error("Update not allowed")
-        }
-        if(data?.skills?.length>3){
-            throw new Error("Skills cannot be more than 3!")
-        }
+//     try{
+//         const ALLOWED_UPDATES = [
+//             "photoUrl",
+//             "about",
+//             "gender",
+//             "age",
+//             "skills"
+//         ]
+//         const isUpdateAllowed = Object.keys(data).every((k) => 
+//             ALLOWED_UPDATES.includes(k)
+//         )
+//         console.log(isUpdateAllowed)
+//         if(!isUpdateAllowed){
+//             throw new Error("Update not allowed")
+//         }
+//         if(data?.skills?.length>3){
+//             throw new Error("Skills cannot be more than 3!")
+//         }
         
-        const user = await User.findByIdAndUpdate({ _id: userId }, data, {
-            returnDocument: "after",
-            runValidators: true 
-        })
-        console.log(user)
-        res.send("User updated successfully!")
-    }catch(error){
-        res.status(400).send("UPDATE FAILED: " + error.message)
-    }
-})
+//         const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+//             returnDocument: "after",
+//             runValidators: true 
+//         })
+//         console.log(user)
+//         res.send("User updated successfully!")
+//     }catch(error){
+//         res.status(400).send("UPDATE FAILED: " + error.message)
+//     }
+// })
 
-connectDB()
-    .then(() => {
-        console.log("database connection established...");
-        app.listen(3000 , () => {
-            console.log("server is listening on port 3000 ");
-        })
-    })
-    .catch((error) => {
-        console.error("Database connot be connected")
-        console.log(error)
-    }) 
 
