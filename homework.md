@@ -103,6 +103,16 @@
 - Create PATCH /profile/password API => forgot password API
 - Make sure you validate all data in every POST, PATCH APIs
 
+- Create connection request schema
+- Send connection request api
+- proper validation of data
+- think about all corner cases
+- $or query and $and query in mongoose - mongodb link
+- schema.pre("save") function
+- Read more about Indexe in MongoDB
+- Why do we need index in DB?
+- What is the advantage and disadvantages of creating index?
+- Read this article about compound indexes: https://www.mongodb.com/docs/manual
 
 // app.use("/admin", (req, res, next) => {
 //     // authorize the admin
