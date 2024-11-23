@@ -107,12 +107,18 @@
 - Send connection request api
 - proper validation of data
 - think about all corner cases
-- $or query and $and query in mongoose - mongodb link
+- $or query and $and query in mongoose - mongodb link https://www.mongodb.com/docs/manual/reference/operator/query-logical/
 - schema.pre("save") function
 - Read more about Indexe in MongoDB
 - Why do we need index in DB?
 - What is the advantage and disadvantages of creating index?
-- Read this article about compound indexes: https://www.mongodb.com/docs/manual
+- Read this article about compound indexes: https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/
+
+- Write code with proper validations for POST /request/review/:status/:requestId
+- Thought process: POST vs GET
+- Read about ref and populate https://mongoosejs.com/docs/populate.html
+- Create GET /user/requests/received with all the checks
+
 
 // app.use("/admin", (req, res, next) => {
 //     // authorize the admin
